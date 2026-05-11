@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\MahasiswaModel;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        // Mengambil data user yang sedang login untuk dipersonalisasi
         $user = Auth::user();
-
-        // Di aplikasi enterprise, kita bisa mengirim data statistik di sini
-        // Contoh: $jumlahMahasiswa = Mahasiswa::count();
+        // Ambil semua data mahasiswa agar tabel di view 'home' terisi
+        $mahasiswa = MahasiswaModel::all();
 
         return view('home', [
             'user' => $user,
+            'mahasiswa' => $mahasiswa, // Kirim variabel ini ke view
             'waktu' => date('H:i'),
             'status' => 'Aktif'
         ]);

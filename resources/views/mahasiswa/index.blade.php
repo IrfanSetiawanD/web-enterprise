@@ -1,49 +1,66 @@
 @extends('master')
 
 @section('konten')
-    <div class="card shadow-sm border-0">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="fw-bold text-primary"><i class="fa fa-graduation-cap me-2"></i>Data Mahasiswa</h3>
-                <a class="btn btn-primary" href="{{ route('mahasiswa.create') }}">
-                    <i class="fa fa-plus me-1"></i> Tambah Mahasiswa
-                </a>
-            </div>
-
-            @if (session('message'))
-                <div class="alert alert-success border-0 shadow-sm">{{ session('message') }}</div>
-            @endif
-
-            <div class="table-responsive">
-                <table class="table table-hover mt-3">
-                    <thead class="table-light">
-                        <tr>
-                            <th>NIM</th>
-                            <th>Nama Lengkap</th>
-                            <th>Tempat Lahir</th>
-                            <th>No. HP</th>
-                            <th class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($mahasiswa as $m)
-                            <tr>
-                                <td><span class="badge bg-secondary">{{ $m->nim }}</span></td>
-                                <td>{{ $m->nama_mahasiswa }}</td>
-                                <td>{{ $m->tempat_lahir }}</td>
-                                <td>{{ $m->no_hp }}</td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-info text-white"><i class="fa fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center text-muted">Belum ada data mahasiswa.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card shadow border-0">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fa fa-user-circle me-2"></i>Data Profil Mahasiswa</h5>
+                        @if (session('message'))
+                            <span class="badge bg-success">{{ session('message') }}</span>
+                        @endif
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped table-hover">
+                            @foreach ($mahasiswa as $m)
+                                <tr>
+                                    <th width="30%">NIM</th>
+                                    <td>: {{ $m->nim }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nama Lengkap</th>
+                                    <td>: {{ $m->nama_mahasiswa }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Jurusan</th>
+                                    <td>: {{ $m->jurusan }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tempat, Tanggal Lahir</th>
+                                    <td>: {{ $m->tempat_lahir }},
+                                        {{ \Carbon\Carbon::parse($m->tanggal_lahir)->format('d F Y') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nomor HP</th>
+                                    <td>: {{ $m->no_hp ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Alamat</th>
+                                    <td>: {{ $m->alamat ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Status Akun</th>
+                                    <td>:
+                                        <span class="badge {{ $m->status == 'Active' ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $m->status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Aksi</th>
+                                    <td>
+                                        {{-- PERBAIKAN DI SINI: Menambahkan $m->id --}}
+                                        <a href="{{ route('mahasiswa.edit', $m->id_mahasiswa) }}"
+                                            class="btn btn-warning btn-sm">
+                                            <i class="fa fa-edit"></i> Perbarui Profil
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -56,7 +56,7 @@ class RegisterController extends Controller
         return redirect('register');
     }
 
-    public function verify($verify_key)
+    public function verify(string $verify_key)
     {
         // Mencari user berdasarkan verify_key
         $user = User::where('verify_key', $verify_key)->first();
